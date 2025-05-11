@@ -118,24 +118,46 @@
       return divFooter;
     }
 
-    let  btnWrite = document.querySelector('.add-form-button');
+    function removeClassError(input) {
+      input.classList.remove('input-error');
+    }
+
     let listComment = document.querySelector('.comments');
+    let btnWrite = document.querySelector('.add-form-button');
+    let inputName = document.querySelector('.add-form-name');
+    let inputText = document.querySelector('.add-form-text');
 
     btnWrite.addEventListener('click', () => {
       console.log('click');
 
-      let newComment = document.createElement('li');
-      newComment.className = 'comment';
+      if (inputName.value === '' || inputText.value === '') {
+        if (inputName.value === '') {
+          inputName.classList.add('input-error')
 
-      let header = createCommentHeader('Иван');
-      let body = createCommentBody('text text text');
-      let footer = createCommentFooter();
+          setTimeout(() => removeClassError(inputName), 2000);
+        }
+        if (inputText.value === '') {
+          inputText.classList.add('input-error')
 
-      newComment.appendChild(header);
-      newComment.appendChild(body);
-      newComment.appendChild(footer);
+          setTimeout(() => removeClassError(inputText), 2000);
+        }
+      } else {
+        let newComment = document.createElement('li');
+        newComment.className = 'comment';
 
-      listComment.appendChild(newComment);
+        let header = createCommentHeader(inputName.value);
+        let body = createCommentBody(inputText.value);
+        let footer = createCommentFooter();
+
+        newComment.appendChild(header);
+        newComment.appendChild(body);
+        newComment.appendChild(footer);
+
+        listComment.appendChild(newComment);
+
+        inputName.value = '';
+        inputText.value = '';
+      }
     });
     
   </script>
