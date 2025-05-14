@@ -1,7 +1,4 @@
-function createCommentHeader(name) {
-    let divHeader = document.createElement('div');
-    let divName = document.createElement('div');
-    let divDate = document.createElement('div');
+function getCurrentDate() {
 
     let date = new Date();
     let day = String(date.getDate()).padStart(2, 0);
@@ -10,46 +7,7 @@ function createCommentHeader(name) {
     let hour = String(date.getHours()).padStart(2, 0);
     let minute = String(date.getMinutes()).padStart(2, 0);
 
-    divName.textContent = name;
-    divDate.textContent = `${day}.${month}.${year} ${hour}:${minute}`;
-    divHeader.className = 'comment-header';
-
-    divHeader.appendChild(divName);
-    divHeader.appendChild(divDate);
-
-    return divHeader;
-}
-
-function createCommentBody(text) {
-    let divBody = document.createElement('div');
-    let divText = document.createElement('div');
-
-    divBody.className = 'comment-body';
-    divText.className = 'comment-text';
-    divText.textContent = text;
-
-    divBody.appendChild(divText);
-
-    return divBody;
-}
-
-function createCommentFooter() {
-    let divFooter = document.createElement('div');
-    let divLikes = document.createElement('div');
-    let spanCounter = document.createElement('span');
-    let btnLike = document.createElement('button');
-
-    divFooter.className = 'comment-footer';
-    divLikes.className = 'likes';
-    btnLike.className = 'like-button';
-    spanCounter.className = 'likes-counter';
-    spanCounter.textContent = 0;
-
-    divLikes.appendChild(spanCounter);
-    divLikes.appendChild(btnLike);
-    divFooter.appendChild(divLikes);
-
-    return divFooter;
+    return `${day}.${month}.${year} ${hour}:${minute}`;
 }
 
 function removeClassError(input) {
@@ -78,7 +36,7 @@ let btnWrite = document.querySelector('.add-form-button');
 let inputName = document.querySelector('.add-form-name');
 let inputText = document.querySelector('.add-form-text');
 
-function addEventBtnLike() {
+function addClickBtnLike() {
     const arrayBtnLike = document.querySelectorAll('.like-button');
     for (const btnLike of arrayBtnLike) {
         btnLike.addEventListener('click', () => {
@@ -120,10 +78,8 @@ function renderComments() {
 
     listComment.innerHTML = htmlComments;
 
-    addEventBtnLike();
+    addClickBtnLike();
 }
-
-renderComments();
 
 btnWrite.addEventListener('click', () => {
     if (inputName.value === '' || inputText.value === '') {
@@ -138,20 +94,21 @@ btnWrite.addEventListener('click', () => {
             setTimeout(() => removeClassError(inputText), 2000);
         }
     } else {
-        let newComment = document.createElement('li');
-        newComment.className = 'comment';
-
-        let header = createCommentHeader(inputName.value);
-        let body = createCommentBody(inputText.value);
-        let footer = createCommentFooter();
-
-        newComment.appendChild(header);
-        newComment.appendChild(body);
-        newComment.appendChild(footer);
-
-        listComment.appendChild(newComment);
+        comments.push(
+            {
+                name: inputName.value,
+                date: getCurrentDate(),
+                text: inputText.value,
+                countLike: 0,
+                isActiveLike: false,
+            }
+        );
 
         inputName.value = '';
         inputText.value = '';
+
+        renderComments();
     }
 });
+
+renderComments();
