@@ -39,7 +39,9 @@ let inputText = document.querySelector('.add-form-text');
 function addClickBtnLike() {
     const arrayBtnLike = document.querySelectorAll('.like-button');
     for (const btnLike of arrayBtnLike) {
-        btnLike.addEventListener('click', () => {
+        btnLike.addEventListener('click', (event) => {
+            event.stopPropagation();
+
             if (comments[btnLike.dataset.index].isActiveLike) {
                 comments[btnLike.dataset.index].isActiveLike = false;
                 comments[btnLike.dataset.index].countLike--;
@@ -53,17 +55,30 @@ function addClickBtnLike() {
     }
 }
 
+function addClickComment() {
+    const elementsComments = document.querySelectorAll('.comment');
+
+    for (const elementComments of elementsComments) {
+        elementComments.addEventListener('click', () => {
+            const index = elementComments.dataset.index;
+            inputText.value = `${comments[index].text}\n${comments[index].name}`;
+        })
+    }
+}
+
 function renderComments() {
     const htmlComments = comments.map((comment, index) => {
         return `
-        <li class="comment">
+        <li data-index='${index}' class="comment">
           <div class="comment-header">
             <div>${comment.name}</div>
             <div>${comment.date}</div>
           </div>
+          <div>
+          </div>
           <div class="comment-body">
             <div class="comment-text">
-              ${comment.text}
+              ${comment.text.replaceAll('\n', '<br>')}
             </div>
           </div>
           <div class="comment-footer">
@@ -79,6 +94,7 @@ function renderComments() {
     listComment.innerHTML = htmlComments;
 
     addClickBtnLike();
+    addClickComment();
 }
 
 btnWrite.addEventListener('click', () => {
@@ -98,7 +114,7 @@ btnWrite.addEventListener('click', () => {
             {
                 name: inputName.value,
                 date: getCurrentDate(),
-                text: inputText.value,
+                text: inputText.value.replaceAll('<', '&#706;').replaceAll('>', '&#707;'),
                 countLike: 0,
                 isActiveLike: false,
             }
