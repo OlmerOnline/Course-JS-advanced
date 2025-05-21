@@ -1,5 +1,5 @@
-export function getCurrentDate() {
-    let date = new Date();
+export function formatDate(dateString) {
+    let date = new Date(dateString);
     let day = String(date.getDate()).padStart(2, 0);
     let month = String(date.getMonth() + 1).padStart(2, 0);
     let year = String(date.getFullYear()).slice(-2);

@@ -8,13 +8,12 @@ export function addClickBtnLike() {
         btnLike.addEventListener('click', (event) => {
             event.stopPropagation();
 
-            if (comments[btnLike.dataset.index].isActiveLike) {
-                comments[btnLike.dataset.index].isActiveLike = false;
-                comments[btnLike.dataset.index].countLike--;
-            } else {
-                comments[btnLike.dataset.index].isActiveLike = true;
-                comments[btnLike.dataset.index].countLike++;
-            }
+            comments[btnLike.dataset.index].isLiked
+                ? comments[btnLike.dataset.index].likes--
+                : comments[btnLike.dataset.index].likes++;
+
+            comments[btnLike.dataset.index].isLiked =
+                !comments[btnLike.dataset.index].isLiked;
 
             renderComments();
         });
@@ -28,7 +27,7 @@ export function addClickComment() {
     for (const elementComments of elementsComments) {
         elementComments.addEventListener('click', () => {
             const index = elementComments.dataset.index;
-            inputText.value = `<${comments[index].text}\n${comments[index].name}>`;
+            inputText.value = `<${comments[index].text}\n${comments[index].author.name}>`;
         });
     }
 }
