@@ -1,6 +1,5 @@
 import { renderComments } from './render.js';
-import { comments } from './comments.js';
-import { getCurrentDate } from './date.js';
+import { comments, updateComments } from './comments.js';
 import { replaceSymbol } from './replace.js';
 
 let btnWrite = document.querySelector('.add-form-button');
@@ -11,7 +10,7 @@ function removeClassError(input) {
     input.classList.remove('input-error');
 }
 
-export function addClickBtnAddComment() {
+export function addClickBtnAddComment(API) {
     btnWrite.addEventListener('click', () => {
         if (inputName.value === '' || inputText.value === '') {
             if (inputName.value === '') {
@@ -24,19 +23,37 @@ export function addClickBtnAddComment() {
 
                 setTimeout(() => removeClassError(inputText), 2000);
             }
-        } else {
-            comments.push({
-                name: replaceSymbol(inputName.value),
-                date: getCurrentDate(),
-                text: replaceSymbol(inputText.value),
-                countLike: 0,
-                isActiveLike: false,
-            });
 
-            inputName.value = '';
-            inputText.value = '';
-
-            renderComments();
+            return;
         }
+
+        if (inputName.value.length < 3 || inputText.value.length < 3) {
+            inputName.value.length < 3
+                ? alert('Имя не должно быть менее 3 символов')
+                : alert('Комментарий не должен быть менее 3 символов');
+            return;
+        }
+
+        const newComment = {
+            text: replaceSymbol(inputText.value),
+            name: replaceSymbol(inputName.value),
+        };
+
+        inputName.value = '';
+        inputText.value = '';
+
+        fetch(API, {
+            method: 'POST',
+            body: JSON.stringify(newComment),
+        });
+
+        fetch(API, { method: 'GET' })
+            .then((response) => {
+                return response.json();
+            })
+            .then((data) => {
+                updateComments(data.comments);
+                renderComments();
+            });
     });
 }
