@@ -1,6 +1,14 @@
 import { renderComments } from './render.js';
 import { comments } from './comments.js';
 
+function delay(interval = 300) {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            resolve();
+        }, interval);
+    });
+}
+
 export function addClickBtnLike() {
     const arrayBtnLike = document.querySelectorAll('.like-button');
 
@@ -8,14 +16,18 @@ export function addClickBtnLike() {
         btnLike.addEventListener('click', (event) => {
             event.stopPropagation();
 
-            comments[btnLike.dataset.index].isLiked
-                ? comments[btnLike.dataset.index].likes--
-                : comments[btnLike.dataset.index].likes++;
+            btnLike.classList.add('loading-like');
+            console.log(btnLike.classList);
 
-            comments[btnLike.dataset.index].isLiked =
-                !comments[btnLike.dataset.index].isLiked;
+            const index = btnLike.dataset.index;
 
-            renderComments();
+            delay(2000).then(() => {
+                comments[index].isLiked
+                    ? comments[index].likes--
+                    : comments[index].likes++;
+                comments[index].isLiked = !comments[index].isLiked;
+                renderComments();
+            });
         });
     }
 }
