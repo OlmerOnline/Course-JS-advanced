@@ -1,10 +1,11 @@
-import { renderComments } from './render.js';
-import { comments, updateComments } from './comments.js';
 import { replaceSymbol } from './replace.js';
+import { fetchGetComments } from './fetchGetComments.js';
 
 let btnWrite = document.querySelector('.add-form-button');
 let inputName = document.querySelector('.add-form-name');
 let inputText = document.querySelector('.add-form-text');
+const formAddComment = document.querySelector('.add-form');
+const container = document.querySelector('.container');
 
 function removeClassError(input) {
     input.classList.remove('input-error');
@@ -39,21 +40,24 @@ export function addClickBtnAddComment(API) {
             name: replaceSymbol(inputName.value),
         };
 
-        inputName.value = '';
-        inputText.value = '';
+        formAddComment.style.display = 'none';
+
+        const loaderText = document.createElement('p');
+        loaderText.textContent = 'Комментарий добавляется';
+        container.appendChild(loaderText);
 
         fetch(API, {
             method: 'POST',
             body: JSON.stringify(newComment),
-        });
-
-        fetch(API, { method: 'GET' })
-            .then((response) => {
-                return response.json();
+        })
+            .then(() => {
+                return fetchGetComments(API);
             })
-            .then((data) => {
-                updateComments(data.comments);
-                renderComments();
+            .then(() => {
+                inputName.value = '';
+                inputText.value = '';
+                formAddComment.style.display = 'flex';
+                container.removeChild(loaderText);
             });
     });
 }
