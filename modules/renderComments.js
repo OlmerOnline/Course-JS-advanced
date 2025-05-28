@@ -1,9 +1,14 @@
 import { comments } from './comments.js';
+import { user } from './user.js';
+
+import { renderForm } from './renderForm.js';
+import { renderLogin } from './renderLogin.js';
+
 import { addClickBtnLike, addClickComment } from './eventsComment.js';
 import { formatDate } from './date.js';
 
 export function renderComments() {
-    const listComment = document.querySelector('.comments');
+    const app = document.getElementById('app');
 
     const htmlComments = comments
         .map((comment, index) => {
@@ -30,8 +35,26 @@ export function renderComments() {
         })
         .join('');
 
-    listComment.innerHTML = htmlComments;
+    app.innerHTML = `
+        <ul class="comments">
+          ${htmlComments}
+        </ul>
+    `;
 
-    addClickBtnLike();
-    addClickComment();
+    if (Object.keys(user).length === 0) {
+        const app = document.getElementById('app');
+
+        const login = document.createElement('button');
+        login.classList.add('add-form-button');
+        login.textContent = 'Чтобы добавить комментарий, авторизуйтесь';
+        login.addEventListener('click', () => {
+            renderLogin();
+        });
+
+        app.appendChild(login);
+    } else {
+        renderForm();
+        addClickBtnLike();
+        addClickComment();
+    }
 }

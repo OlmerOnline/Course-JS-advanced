@@ -1,7 +1,10 @@
-import { fetchGetComments } from './modules/fetchGetComments.js';
-import { addClickBtnAddComment } from './modules/eventsBtnAddComment.js';
+import { getComments, getCommentsAuthorazation } from './modules/api.js';
+import { getLocalStorage } from './modules/localStorage.js';
+import { updateUser } from './modules/user.js';
 
-const API = 'https://wedev-api.sky.pro/api/v1/arusskov/comments';
-
-fetchGetComments(API);
-addClickBtnAddComment(API);
+if (localStorage.getItem('token') !== null) {
+    updateUser(getLocalStorage());
+    getCommentsAuthorazation();
+} else {
+    getComments();
+}

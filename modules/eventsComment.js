@@ -1,13 +1,5 @@
-import { renderComments } from './render.js';
+import { updateLike } from './api.js';
 import { comments } from './comments.js';
-
-function delay(interval = 300) {
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            resolve();
-        }, interval);
-    });
-}
 
 export function addClickBtnLike() {
     const arrayBtnLike = document.querySelectorAll('.like-button');
@@ -16,18 +8,8 @@ export function addClickBtnLike() {
         btnLike.addEventListener('click', (event) => {
             event.stopPropagation();
 
-            btnLike.classList.add('loading-like');
-            console.log(btnLike.classList);
-
             const index = btnLike.dataset.index;
-
-            delay(2000).then(() => {
-                comments[index].isLiked
-                    ? comments[index].likes--
-                    : comments[index].likes++;
-                comments[index].isLiked = !comments[index].isLiked;
-                renderComments();
-            });
+            updateLike(index);
         });
     }
 }
