@@ -1,5 +1,6 @@
 import { comments, updateComments } from './comments.js';
 import { renderComments } from './renderComments.js';
+import { renderHeader } from './renderHeader.js';
 import { user } from './user.js';
 
 const host = 'https://wedev-api.sky.pro/api/v2/avrusskov-test/comments';
@@ -11,6 +12,7 @@ export function getComments() {
         })
         .then((data) => {
             updateComments(data.comments);
+            renderHeader(false);
             renderComments();
         });
 }
@@ -25,6 +27,7 @@ export function getCommentsAuthorazation() {
         })
         .then((data) => {
             updateComments(data.comments);
+            renderHeader(true);
             renderComments();
         });
 }

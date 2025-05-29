@@ -1,3 +1,5 @@
+import { Registration } from './registration.js';
+
 export function renderRegistration() {
     const app = document.getElementById('app');
 
@@ -22,7 +24,16 @@ export function renderRegistration() {
                 placeholder="Введите пароль"
             />
             <div class="add-form-row">
-                <button class="add-form-button">Войти</button>
+                <button id='registration-btn' class="add-form-button">Войти</button>
             </div>
         </div>`;
+
+    const nameInput = document.getElementById('name-input');
+    const loginInput = document.getElementById('login-input');
+    const passwordInput = document.getElementById('password-input');
+    const registrationBtn = document.getElementById('registration-btn');
+
+    registrationBtn.addEventListener('click', () => {
+        Registration(nameInput.value, loginInput.value, passwordInput.value);
+    });
 }

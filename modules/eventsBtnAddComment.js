@@ -27,7 +27,6 @@ async function clickAddComment() {
     container.appendChild(loaderText);
 
     await postComment({ text: replaceSymbol(inputText.value) });
-    console.log('test');
     container.removeChild(loaderText);
     formAddComment.style.display = 'flex';
 }

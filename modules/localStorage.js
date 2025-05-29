@@ -1,3 +1,5 @@
+import { updateUser } from './user.js';
+
 export function setLocalStorage(user) {
     for (let key in user) {
         localStorage.setItem(key, user[key]);
@@ -14,4 +16,15 @@ export function getLocalStorage() {
     newUser['token'] = localStorage.getItem('token');
 
     return newUser;
+}
+
+export function clearLocalStorage() {
+    localStorage.removeItem('_id');
+    localStorage.removeItem('imageUrl');
+    localStorage.removeItem('login');
+    localStorage.removeItem('name');
+    localStorage.removeItem('password');
+    localStorage.removeItem('token');
+
+    updateUser({});
 }

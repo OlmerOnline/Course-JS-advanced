@@ -3,6 +3,7 @@ import { user } from './user.js';
 
 import { renderForm } from './renderForm.js';
 import { renderLogin } from './renderLogin.js';
+import { renderRegistration } from './renderRegistration.js';
 
 import { addClickBtnLike, addClickComment } from './eventsComment.js';
 import { formatDate } from './date.js';
@@ -51,7 +52,15 @@ export function renderComments() {
             renderLogin();
         });
 
+        const registaration = document.createElement('button');
+        registaration.classList.add('add-form-button');
+        registaration.textContent = 'Зарегистрироваться';
+        registaration.addEventListener('click', () => {
+            renderRegistration();
+        });
+
         app.appendChild(login);
+        app.appendChild(registaration);
     } else {
         renderForm();
         addClickBtnLike();

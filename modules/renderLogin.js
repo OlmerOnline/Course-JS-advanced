@@ -1,4 +1,4 @@
-import { Login } from './Login.js';
+import { Login } from './login.js';
 
 export function renderLogin() {
     const app = document.getElementById('app');
@@ -18,7 +18,7 @@ export function renderLogin() {
                 placeholder="Введите пароль"
             />
             <div class="add-form-row">
-                <button id='login-btn'class="add-form-button">Войти</button>
+                <button id='login-btn' class="add-form-button">Войти</button>
             </div>
         </div>`;
 

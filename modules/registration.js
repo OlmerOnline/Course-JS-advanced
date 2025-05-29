@@ -2,20 +2,20 @@ import { getCommentsAuthorazation } from './api.js';
 import { setLocalStorage } from './localStorage.js';
 import { updateUser } from './user.js';
 
-const hostLogin = 'https://wedev-api.sky.pro/api/user/login';
+const hostRegistration = 'https://wedev-api.sky.pro/api/user';
 
-export function Login(login, password) {
-    fetch(hostLogin, {
+export function Registration(name, login, password) {
+    fetch(hostRegistration, {
         method: 'POST',
         headers: { Authorization: 'Bearer ksdfsksdfjfsdjk' },
-        body: JSON.stringify({ login, password }),
+        body: JSON.stringify({ name, login, password }),
     })
         .then((response) => {
             if (response.status === 201) {
                 return response.json();
             } else {
                 if (response.status === 400) {
-                    throw new Error('Не верный логин или пароль');
+                    throw new Error('Пользователь с таким логином уже есть');
                 } else {
                     throw new Error('Что то пошло не так');
                 }
