@@ -1,9 +1,5 @@
-import { replaceSymbol } from './replace.js';
+import { removeClassError, replaceSymbol } from './helpers.js';
 import { postComment } from './api.js';
-
-function removeClassError(input) {
-    input.classList.remove('input-error');
-}
 
 async function clickAddComment() {
     const inputText = document.querySelector('.add-form-text');

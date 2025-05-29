@@ -15,7 +15,7 @@ export function Login(login, password) {
                 return response.json();
             } else {
                 if (response.status === 400) {
-                    throw new Error('Не верный логин или пароль');
+                    throw new Error('400');
                 } else {
                     throw new Error('Что то пошло не так');
                 }
@@ -27,6 +27,13 @@ export function Login(login, password) {
             getCommentsAuthorazation();
         })
         .catch((error) => {
-            alert(error.message);
+            switch (error.message) {
+                case '400':
+                    alert('Не верный логин или пароль');
+                    break;
+                default:
+                    alert('Что то пошло не так');
+                    break;
+            }
         });
 }

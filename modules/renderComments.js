@@ -54,7 +54,7 @@ export function renderComments() {
 
         const registaration = document.createElement('button');
         registaration.classList.add('add-form-button');
-        registaration.textContent = 'Зарегистрироваться';
+        registaration.textContent = 'Регистрация';
         registaration.addEventListener('click', () => {
             renderRegistration();
         });

@@ -8,7 +8,7 @@ export function renderHeader(isLogin) {
     if (isLogin) {
         header.innerHTML = `
         <p>${user.name}</p>
-        <button id="logout">Выйти</button>
+        <button id="logout" class="header-btn">Выйти</button>
     `;
 
         const logoutBtn = document.getElementById('logout');

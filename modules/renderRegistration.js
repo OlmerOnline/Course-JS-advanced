@@ -1,6 +1,10 @@
+import { getComments } from './api.js';
+import { removeClassError } from './helpers.js';
 import { Registration } from './registration.js';
 
 export function renderRegistration() {
+    window.scrollTo(0, 0);
+
     const app = document.getElementById('app');
 
     app.innerHTML = `
@@ -23,8 +27,9 @@ export function renderRegistration() {
                 class="add-form-name"
                 placeholder="Введите пароль"
             />
-            <div class="add-form-row">
-                <button id='registration-btn' class="add-form-button">Войти</button>
+            <div class="add-form-login">
+                <button id='registration-btn' class="add-form-button">Зарегистрироваться</button>
+                <button id='back-btn' class="add-form-button">Назад</button>
             </div>
         </div>`;
 
@@ -32,8 +37,38 @@ export function renderRegistration() {
     const loginInput = document.getElementById('login-input');
     const passwordInput = document.getElementById('password-input');
     const registrationBtn = document.getElementById('registration-btn');
+    const backBtn = document.getElementById('back-btn');
 
     registrationBtn.addEventListener('click', () => {
+        if (
+            loginInput.value === '' ||
+            passwordInput.value === '' ||
+            nameInput.value === ''
+        ) {
+            if (nameInput.value === '') {
+                nameInput.classList.add('input-error');
+
+                setTimeout(() => removeClassError(nameInput), 2000);
+            }
+            if (loginInput.value === '') {
+                loginInput.classList.add('input-error');
+
+                setTimeout(() => removeClassError(loginInput), 2000);
+            }
+
+            if (passwordInput.value === '') {
+                passwordInput.classList.add('input-error');
+
+                setTimeout(() => removeClassError(passwordInput), 2000);
+            }
+
+            return;
+        }
+
         Registration(nameInput.value, loginInput.value, passwordInput.value);
+    });
+
+    backBtn.addEventListener('click', () => {
+        getComments();
     });
 }

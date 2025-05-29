@@ -1,6 +1,10 @@
+import { getComments } from './api.js';
+import { removeClassError } from './helpers.js';
 import { Login } from './login.js';
 
 export function renderLogin() {
+    window.scrollTo(0, 0);
+
     const app = document.getElementById('app');
 
     app.innerHTML = `
@@ -17,16 +21,38 @@ export function renderLogin() {
                 class="add-form-name"
                 placeholder="Введите пароль"
             />
-            <div class="add-form-row">
+            <div class="add-form-login">
                 <button id='login-btn' class="add-form-button">Войти</button>
+                <button id='back-btn' class="add-form-button">Назад</button>
             </div>
         </div>`;
 
     const loginInput = document.getElementById('login-input');
     const passwordInput = document.getElementById('password-input');
     const loginBtn = document.getElementById('login-btn');
+    const backBtn = document.getElementById('back-btn');
 
     loginBtn.addEventListener('click', () => {
+        if (loginInput.value === '' || passwordInput.value === '') {
+            if (loginInput.value === '') {
+                loginInput.classList.add('input-error');
+
+                setTimeout(() => removeClassError(loginInput), 2000);
+            }
+
+            if (passwordInput.value === '') {
+                passwordInput.classList.add('input-error');
+
+                setTimeout(() => removeClassError(passwordInput), 2000);
+            }
+
+            return;
+        }
+
         Login(loginInput.value, passwordInput.value);
+    });
+
+    backBtn.addEventListener('click', () => {
+        getComments();
     });
 }

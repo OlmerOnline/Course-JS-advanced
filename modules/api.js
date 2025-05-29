@@ -33,7 +33,7 @@ export function getCommentsAuthorazation() {
 }
 
 export function postComment(newComment) {
-    fetch(host, {
+    return fetch(host, {
         method: 'POST',
         headers: { Authorization: `Bearer ${user.token}` },
         body: JSON.stringify(newComment),
