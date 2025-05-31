@@ -1,13 +1,7 @@
-import { renderComments } from './render.js';
+import { updateLike } from './api.js';
 import { comments } from './comments.js';
-
-function delay(interval = 300) {
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            resolve();
-        }, interval);
-    });
-}
+import { renderComments } from './renderComments.js';
+import { user } from './user.js';
 
 export function addClickBtnLike() {
     const arrayBtnLike = document.querySelectorAll('.like-button');
@@ -16,18 +10,18 @@ export function addClickBtnLike() {
         btnLike.addEventListener('click', (event) => {
             event.stopPropagation();
 
-            btnLike.classList.add('loading-like');
-            console.log(btnLike.classList);
+            if (Object.keys(user).length !== 0) {
+                const index = btnLike.dataset.index;
 
-            const index = btnLike.dataset.index;
+                updateLike(comments[index].id).then((data) => {
+                    comments[index].likes = data.result.likes;
+                    comments[index].isLiked = data.result.isLiked;
 
-            delay(2000).then(() => {
-                comments[index].isLiked
-                    ? comments[index].likes--
-                    : comments[index].likes++;
-                comments[index].isLiked = !comments[index].isLiked;
-                renderComments();
-            });
+                    renderComments();
+                });
+            } else {
+                alert('Нужно авторизоваться');
+            }
         });
     }
 }
