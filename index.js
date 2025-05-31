@@ -1,10 +1,3 @@
-import { getComments, getCommentsAuthorazation } from './modules/api.js';
-import { getLocalStorage } from './modules/localStorage.js';
-import { updateUser } from './modules/user.js';
+import { renderComments } from './modules/renderComments.js';
 
-if (localStorage.getItem('token') !== null) {
-    updateUser(getLocalStorage());
-    getCommentsAuthorazation();
-} else {
-    getComments();
-}
+renderComments();

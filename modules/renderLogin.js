@@ -1,6 +1,8 @@
-import { getComments } from './api.js';
 import { removeClassError } from './helpers.js';
+import { setLocalStorage } from './localStorage.js';
 import { Login } from './login.js';
+import { renderComments } from './renderComments.js';
+import { updateUser } from './user.js';
 
 export function renderLogin() {
     window.scrollTo(0, 0);
@@ -18,7 +20,7 @@ export function renderLogin() {
             <input
                 id="password-input"
                 type="text"
-                class="add-form-name"
+                class="add-form-name_login"
                 placeholder="Введите пароль"
             />
             <div class="add-form-login">
@@ -48,11 +50,14 @@ export function renderLogin() {
 
             return;
         }
-
-        Login(loginInput.value, passwordInput.value);
+        Login(loginInput.value, passwordInput.value).then((data) => {
+            setLocalStorage(data.user);
+            updateUser(data.user);
+            renderComments();
+        });
     });
 
     backBtn.addEventListener('click', () => {
-        getComments();
+        renderComments();
     });
 }

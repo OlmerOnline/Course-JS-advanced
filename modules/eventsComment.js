@@ -1,5 +1,7 @@
 import { updateLike } from './api.js';
 import { comments } from './comments.js';
+import { renderComments } from './renderComments.js';
+import { user } from './user.js';
 
 export function addClickBtnLike() {
     const arrayBtnLike = document.querySelectorAll('.like-button');
@@ -8,8 +10,18 @@ export function addClickBtnLike() {
         btnLike.addEventListener('click', (event) => {
             event.stopPropagation();
 
-            const index = btnLike.dataset.index;
-            updateLike(index);
+            if (Object.keys(user).length !== 0) {
+                const index = btnLike.dataset.index;
+
+                updateLike(comments[index].id).then((data) => {
+                    comments[index].likes = data.result.likes;
+                    comments[index].isLiked = data.result.isLiked;
+
+                    renderComments();
+                });
+            } else {
+                alert('Нужно авторизоваться');
+            }
         });
     }
 }

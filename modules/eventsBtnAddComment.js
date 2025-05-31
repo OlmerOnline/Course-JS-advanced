@@ -1,5 +1,6 @@
 import { removeClassError, replaceSymbol } from './helpers.js';
 import { postComment } from './api.js';
+import { renderComments } from './renderComments.js';
 
 async function clickAddComment() {
     const inputText = document.querySelector('.add-form-text');
@@ -23,8 +24,7 @@ async function clickAddComment() {
     container.appendChild(loaderText);
 
     await postComment({ text: replaceSymbol(inputText.value) });
-    container.removeChild(loaderText);
-    formAddComment.style.display = 'flex';
+    renderComments();
 }
 
 export function addClickBtnAddComment() {

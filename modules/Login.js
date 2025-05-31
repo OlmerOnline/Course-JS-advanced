@@ -1,13 +1,8 @@
-import { getCommentsAuthorazation } from './api.js';
-import { setLocalStorage } from './localStorage.js';
-import { updateUser } from './user.js';
-
 const hostLogin = 'https://wedev-api.sky.pro/api/user/login';
 
 export function Login(login, password) {
-    fetch(hostLogin, {
+    return fetch(hostLogin, {
         method: 'POST',
-        headers: { Authorization: 'Bearer ksdfsksdfjfsdjk' },
         body: JSON.stringify({ login, password }),
     })
         .then((response) => {
@@ -20,11 +15,6 @@ export function Login(login, password) {
                     throw new Error('Что то пошло не так');
                 }
             }
-        })
-        .then((data) => {
-            setLocalStorage(data.user);
-            updateUser(data.user);
-            getCommentsAuthorazation();
         })
         .catch((error) => {
             switch (error.message) {

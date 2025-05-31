@@ -1,35 +1,20 @@
-import { comments, updateComments } from './comments.js';
-import { renderComments } from './renderComments.js';
-import { renderHeader } from './renderHeader.js';
 import { user } from './user.js';
 
 const host = 'https://wedev-api.sky.pro/api/v2/avrusskov-test/comments';
 
 export function getComments() {
-    fetch(host, { method: 'GET' })
-        .then((response) => {
-            return response.json();
-        })
-        .then((data) => {
-            updateComments(data.comments);
-            renderHeader(false);
-            renderComments();
-        });
+    return fetch(host, { method: 'GET' }).then((response) => {
+        return response.json();
+    });
 }
 
 export function getCommentsAuthorazation() {
-    fetch(host, {
+    return fetch(host, {
         method: 'GET',
         headers: { Authorization: `Bearer ${user.token}` },
-    })
-        .then((response) => {
-            return response.json();
-        })
-        .then((data) => {
-            updateComments(data.comments);
-            renderHeader(true);
-            renderComments();
-        });
+    }).then((response) => {
+        return response.json();
+    });
 }
 
 export function postComment(newComment) {
@@ -40,7 +25,7 @@ export function postComment(newComment) {
     })
         .then((responce) => {
             if (responce.status === 201) {
-                return getCommentsAuthorazation();
+                return;
             } else {
                 if (responce.status === 400) {
                     throw new Error('400');
@@ -59,18 +44,11 @@ export function postComment(newComment) {
         });
 }
 
-export function updateLike(index) {
-    fetch(`${host}/${comments[index].id}/toggle-like`, {
+export function updateLike(id) {
+    return fetch(`${host}/${id}/toggle-like`, {
         method: 'POST',
         headers: { Authorization: `Bearer ${user.token}` },
-    })
-        .then((response) => {
-            return response.json();
-        })
-        .then((data) => {
-            comments[index].likes = data.result.likes;
-            comments[index].isLiked = data.result.isLiked;
-
-            renderComments();
-        });
+    }).then((response) => {
+        return response.json();
+    });
 }

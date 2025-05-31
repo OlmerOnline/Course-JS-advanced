@@ -1,5 +1,4 @@
-import { comments } from './comments.js';
-import { user } from './user.js';
+import { comments, updateComments } from './comments.js';
 
 import { renderForm } from './renderForm.js';
 import { renderLogin } from './renderLogin.js';
@@ -7,8 +6,26 @@ import { renderRegistration } from './renderRegistration.js';
 
 import { addClickBtnLike, addClickComment } from './eventsComment.js';
 import { formatDate } from './date.js';
+import { getComments, getCommentsAuthorazation } from './api.js';
+import { renderHeader } from './renderHeader.js';
+import { getLocalStorage } from './localStorage.js';
+import { updateUser } from './user.js';
 
-export function renderComments() {
+export async function renderComments() {
+    if (localStorage.getItem('token') !== null) {
+        updateUser(getLocalStorage());
+
+        await getCommentsAuthorazation().then((data) => {
+            updateComments(data.comments);
+        });
+
+        renderHeader();
+    } else {
+        await getComments().then((data) => {
+            updateComments(data.comments);
+        });
+    }
+
     const app = document.getElementById('app');
 
     const htmlComments = comments
@@ -42,7 +59,7 @@ export function renderComments() {
         </ul>
     `;
 
-    if (Object.keys(user).length === 0) {
+    if (localStorage.getItem('token') === null) {
         const app = document.getElementById('app');
 
         const login = document.createElement('button');
@@ -63,7 +80,8 @@ export function renderComments() {
         app.appendChild(registaration);
     } else {
         renderForm();
-        addClickBtnLike();
         addClickComment();
     }
+
+    addClickBtnLike();
 }
